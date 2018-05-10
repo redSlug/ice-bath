@@ -26,7 +26,6 @@ app.get(
     let bizs = yelpData.data.search.business;
 
     let promises = bizs.map(biz => {
-      // do queries!
       let coords = biz.coordinates;
       return refuge.query(coords.latitude, coords.longitude);
     });
@@ -34,8 +33,10 @@ app.get(
     let restrooms = await Promise.all(promises);
 
     bizs.forEach((biz, i) => {
-        biz.restroom = restrooms[i];
+      biz.restroom = restrooms[i];
     });
+
+    bizs = bizs.filter(biz => biz.restroom);
 
     res.send(bizs);
   })
