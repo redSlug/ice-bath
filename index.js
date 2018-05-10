@@ -15,18 +15,14 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-
-
 // API
 app.get(
   '/api',
   asyncHandler(async (req, res) => {
     // get everything we need, and pass it back in mssg
-    let html = await yelp.query();
+    let yelpData = await yelp.query();
     let data = {
-      message: 'Hello world!!!!',
-      html
+      yelp: yelpData
     };
     res.send(data);
   })
