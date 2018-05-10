@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 
 const yelp = require('./yelp');
+const refuge = require('./refugerestrooms');
 
 // Constants
 const PORT = process.env.PORT || 8080;
@@ -24,14 +25,19 @@ app.get(
 
     let bizs = yelpData.data.search.business;
 
-    bizs.map(biz => {
+    let promises = bizs.map(biz => {
       // do queries!
+      let coords = biz.coordinates;
+      return refuge.query(coords.latitude, coords.longitude);
     });
 
-    let data = {
-      yelp: yelpData
-    };
-    res.send(data);
+    let restrooms = await Promise.all(promises);
+
+    bizs.forEach((biz, i) => {
+        biz.restroom = restrooms[i];
+    });
+
+    res.send(bizs);
   })
 );
 
