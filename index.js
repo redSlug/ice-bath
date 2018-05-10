@@ -3,6 +3,8 @@
 const asyncHandler = require('express-async-handler');
 const bodyParser = require('body-parser');
 const express = require('express');
+const request = require('request');
+const rp = require('request-promise');
 
 // Constants
 const PORT = process.env.PORT || 8080;
@@ -18,9 +20,10 @@ app.get(
   '/api',
   asyncHandler(async (req, res) => {
     // get everything we need, and pass it back in mssg
-
+    let html = await rp('http://www.google.com')
     let data = {
-      message: 'Hello world, Woooooeeeee!!!!'
+      message: 'Hello world, Woooooeeeee!!!!',
+      html
     };
     res.send(data);
   })
