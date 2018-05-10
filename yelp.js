@@ -3,14 +3,34 @@ const rp = require('request-promise');
 
 const YELP_API_KEY = process.env.YELP_API_KEY;
 
-const QUERY = `{
-  business(id: "garaje-san-francisco") {
-    name
-    id
-    rating
-    url
-  }
-}`;
+const QUERY = `
+    {
+        search(categories: "icecream,gelato",
+                location: "brooklyn",
+                limit: 1) {
+            total
+            business{...basicBizInfo}
+        }
+    }
+
+    fragment basicBizInfo on Business {
+        name
+        id
+        rating
+        review_count
+        photos
+        alias
+        coordinates {
+            latitude
+            longitude
+        }
+        reviews {
+            id
+            text
+        }
+        location{formatted_address}
+    }
+`;
 
 function query() {
   var options = {
