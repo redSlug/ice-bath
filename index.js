@@ -21,6 +21,13 @@ app.get(
   asyncHandler(async (req, res) => {
     // get everything we need, and pass it back in mssg
     let yelpData = await yelp.query();
+
+    let bizs = yelpData.data.search.business;
+
+    bizs.map(biz => {
+      // do queries!
+    });
+
     let data = {
       yelp: yelpData
     };

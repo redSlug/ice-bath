@@ -1,4 +1,3 @@
-const request = require('request');
 const rp = require('request-promise');
 
 const YELP_API_KEY = process.env.YELP_API_KEY;
@@ -7,7 +6,7 @@ const QUERY = `
     {
         search(categories: "icecream,gelato",
                 location: "brooklyn",
-                limit: 1) {
+                limit: 5) {
             total
             business{...basicBizInfo}
         }
@@ -28,7 +27,7 @@ const QUERY = `
             id
             text
         }
-        location{formatted_address}
+        location{ formatted_address address1 }
     }
 `;
 
