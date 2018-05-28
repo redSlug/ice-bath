@@ -1,11 +1,13 @@
 const rp = require('request-promise');
+require('dotenv').config();
 
 const YELP_API_KEY = process.env.YELP_API_KEY;
 
-const QUERY = `
+function query(location,categories) {
+  let QUERY = `
     {
-        search(categories: "icecream,gelato",
-                location: "brooklyn",
+        search(categories: "${categories}",
+                location: "${location}",
                 limit: 5) {
             total
             business{...basicBizInfo}
@@ -31,7 +33,7 @@ const QUERY = `
     }
 `;
 
-function query() {
+
   var options = {
     method: 'POST',
     uri: 'https://api.yelp.com/v3/graphql',
@@ -39,7 +41,7 @@ function query() {
     json: false,
     headers: {
       'Content-Type': 'application/graphql',
-      Authorization: `Bearer ${YELP_API_KEY}`
+      'Authorization': `Bearer ${YELP_API_KEY}`
     }
   };
   return rp(options).then(html => JSON.parse(html));

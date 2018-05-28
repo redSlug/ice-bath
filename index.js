@@ -21,7 +21,10 @@ app.get(
   '/api',
   asyncHandler(async (req, res) => {
     // get everything we need, and pass it back in mssg
-    let yelpData = await yelp.query();
+    let location = req.param('location');
+    let categories = req.param('categories');
+    let yelpData = await yelp.query(location, categories);
+    console.log(yelpData)
 
     let bizs = yelpData.data.search.business;
 
@@ -31,6 +34,7 @@ app.get(
     });
 
     let restrooms = await Promise.all(promises);
+    console.log(restrooms)
 
     bizs.forEach((biz, i) => {
       biz.restroom = restrooms[i];
